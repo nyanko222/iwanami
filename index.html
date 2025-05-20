@@ -53,7 +53,7 @@
   <button id="start-btn">GO</button>
 
   <div id="result"></div>
-  <iframe id="search-frame" style="display: none;"></iframe>
+  
 
   <script>
     const shinshoNumbers = [];
@@ -61,11 +61,10 @@
 fetch('iwanami_red_list_with_links.csv')
   .then(response => response.text())
   .then(data => {
-    const lines = data.trim().split(/[\r\n]+/).slice(1); // 1行目はヘッダーなので除外
     for (const line of lines) {
       const parts = line.split(',');
       if (parts.length >= 2) {
-        shinshoNumbers.push(parts[1].trim());
+        shinshoNumbers.push(parts[2].trim());
       }
     }
     console.log("番号のみ読み込み成功:", shinshoNumbers.length, "件");
@@ -80,21 +79,20 @@ fetch('iwanami_red_list_with_links.csv')
     const result = document.getElementById("result");
     const searchFrame = document.getElementById("search-frame");
 
-    btn.addEventListener("click", () => {
-      if (shinshoNumbers.length === 0) return;
+btn.addEventListener("click", () => {
+  if (shinshoNumbers.length === 0) return;
 
-      result.textContent = "...";
-      searchFrame.style.display = "none";
+  result.textContent = "...";
 
-      setTimeout(() => {
-        const random = shinshoNumbers[Math.floor(Math.random() * shinshoNumbers.length)];
-        result.textContent = `新赤${random}`;
+  setTimeout(() => {
+    const random = shinshoNumbers[Math.floor(Math.random() * shinshoNumbers.length)];
+    result.textContent = random;
 
-        const query = encodeURIComponent(`新赤${random}`);
-        searchFrame.src = `https://www.google.com/search?q=${query}`;
-        searchFrame.style.display = "block";
-      }, 1000);
-    });
+    const query = encodeURIComponent(random);
+    window.open(`https://www.google.com/search?q=${query}`, '_blank');
+  }, 1000);
+});
+
   </script>
 </body>
 </html>
