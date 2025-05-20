@@ -54,25 +54,42 @@
 
   <div id="result"></div>
   
+<script>
+  const shinshoNumbers = [];
 
-  <script>
-    const shinshoNumbers = [];
-
-fetch('iwanami_red_list_with_links.csv')
-  .then(response => response.text())
-  .then(data => {
-    for (const line of lines) {
-      const lines = data.trim().split('\n').slice(1);
-      const parts = line.split(',');
-      if (parts.length >= 2) {
-        shinshoNumbers.push(parts[2].trim());
+  fetch('iwanami_red_list_with_links.csv')
+    .then(response => response.text())
+    .then(data => {
+      const lines = data.trim().split('\n').slice(1); // ←ここで定義する！
+      for (const line of lines) {
+        const parts = line.split(',');
+        if (parts.length >= 3) {
+          shinshoNumbers.push(parts[2].trim()); // 3列目：検索URLを直接使う場合
+        }
       }
-    }
-    console.log("番号のみ読み込み成功:", shinshoNumbers.length, "件");
-  })
-  .catch(err => {
-    console.error("CSV読み込みエラー:", err);
+      console.log("番号のみ読み込み成功:", shinshoNumbers.length, "件");
+    })
+    .catch(err => {
+      console.error("CSV読み込みエラー:", err);
+    });
+
+  const btn = document.getElementById("start-btn");
+  const result = document.getElementById("result");
+
+  btn.addEventListener("click", () => {
+    if (shinshoNumbers.length === 0) return;
+
+    result.textContent = "...";
+
+    setTimeout(() => {
+      const randomUrl = shinshoNumbers[Math.floor(Math.random() * shinshoNumbers.length)];
+      const numberMatch = decodeURIComponent(randomUrl).match(/新赤\\d+/);
+      result.textContent = numberMatch ? numberMatch[0] : "新赤？";
+      window.open(randomUrl, '_blank');
+    }, 1000);
   });
+</script>
+
 
 
 
