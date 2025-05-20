@@ -55,9 +55,6 @@
   <div id="result"></div>
   <iframe id="search-frame" style="display: none;"></iframe>
 
-  <audio id="drum" src="ドラムロール.mp3"></audio>
-  <audio id="bang" src="ジャン！.mp3"></audio>
-
   <script>
     const shinshoNumbers = [];
 
@@ -74,8 +71,6 @@
     const btn = document.getElementById("start-btn");
     const result = document.getElementById("result");
     const searchFrame = document.getElementById("search-frame");
-    const drumSound = document.getElementById("drum");
-    const bangSound = document.getElementById("bang");
 
     btn.addEventListener("click", () => {
       if (shinshoNumbers.length === 0) return;
@@ -83,15 +78,9 @@
       result.textContent = "...";
       searchFrame.style.display = "none";
 
-      drumSound.currentTime = 0;
-      drumSound.play();
-
       setTimeout(() => {
         const random = shinshoNumbers[Math.floor(Math.random() * shinshoNumbers.length)];
         result.textContent = `新赤${random}`;
-
-        bangSound.currentTime = 0;
-        bangSound.play();
 
         const query = encodeURIComponent(`新赤${random}`);
         searchFrame.src = `https://www.google.com/search?q=${query}`;
