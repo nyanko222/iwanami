@@ -61,17 +61,19 @@
 fetch('iwanami_red_list_with_links.csv')
   .then(response => response.text())
   .then(data => {
-    const lines = data.trim().split(/[\r\n]+/).slice(1);
+    const lines = data.trim().split(/[\r\n]+/).slice(1); // 1行目はヘッダーなので除外
     for (const line of lines) {
-      const [rawPrefix, number] = line.split(',');
-      const prefix = rawPrefix.replace(/^\uFEFF/, '').trim();
-      if (prefix === '新赤') shinshoNumbers.push(number.trim());
+      const parts = line.split(',');
+      if (parts.length >= 2) {
+        shinshoNumbers.push(parts[1].trim());
+      }
     }
-    console.log("読み込み成功:", shinshoNumbers.length, "件");
+    console.log("番号のみ読み込み成功:", shinshoNumbers.length, "件");
   })
   .catch(err => {
     console.error("CSV読み込みエラー:", err);
   });
+
 
 
     const btn = document.getElementById("start-btn");
