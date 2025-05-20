@@ -39,11 +39,15 @@
       word-wrap: break-word;
     }
 
-    iframe {
+    a {
+      display: inline-block;
+      font-size: 1.2em;
+      padding: 0.4em 1em;
+      text-decoration: none;
+      color: white;
+      background-color: #007BFF;
+      border-radius: 5px;
       margin-top: 1em;
-      width: 100%;
-      height: 600px;
-      border: none;
     }
   </style>
 </head>
@@ -53,49 +57,33 @@
   <button id="start-btn">GO</button>
 
   <div id="result"></div>
-  <iframe id="search-frame" style="display: none;"></iframe>
-
-  <audio id="drum" src="ドラムロール.mp3"></audio>
-  <audio id="bang" src="ジャン！.mp3"></audio>
+  <div id="search-link">
+    <a id="google-link" href="" target="_blank">Googleで検索</a>
+  </div>
 
   <script>
-    const shinshoNumbers = [];
-
-    fetch('iwanami_red_list_with_links.csv')
-      .then(response => response.text())
-      .then(data => {
-        const lines = data.trim().split('\n').slice(1); // ヘッダー除去
-        for (const line of lines) {
-          const [prefix, number] = line.split(',');
-          if (prefix === '新赤') shinshoNumbers.push(number);
-        }
-      });
+    const shinshoNumbers = [
+      1955, 1954, 1953, 1952, 1951, 1950,
+      1949, 1948, 1947, 1946, 1945, 1944,
+      1943, 1942, 1941, 1940, 1939, 1938
+      // 実際はCSVからの全リストをここに展開 or 外部ファイル読込
+    ];
 
     const btn = document.getElementById("start-btn");
     const result = document.getElementById("result");
-    const searchFrame = document.getElementById("search-frame");
-    const drumSound = document.getElementById("drum");
-    const bangSound = document.getElementById("bang");
+    const searchLink = document.getElementById("search-link");
+    const googleLink = document.getElementById("google-link");
 
     btn.addEventListener("click", () => {
-      if (shinshoNumbers.length === 0) return;
-
       result.textContent = "...";
-      searchFrame.style.display = "none";
-
-      drumSound.currentTime = 0;
-      drumSound.play();
+      searchLink.style.display = "none";
 
       setTimeout(() => {
         const random = shinshoNumbers[Math.floor(Math.random() * shinshoNumbers.length)];
         result.textContent = `新赤${random}`;
-
-        bangSound.currentTime = 0;
-        bangSound.play();
-
-        const query = encodeURIComponent(`新赤${random}`);
-        searchFrame.src = `https://www.google.com/search?q=${query}`;
-        searchFrame.style.display = "block";
+        googleLink.href = `https://www.google.com/search?q=新赤${random}`;
+        googleLink.textContent = `新赤${random} を検索`;
+        searchLink.style.display = "block";
       }, 1000);
     });
   </script>
