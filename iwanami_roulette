@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>岩波新書ルーレット</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 2em;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .header-box {
+      border: 3px solid green;
+      border-radius: 15px;
+      padding: 1em;
+      display: inline-block;
+      font-size: 1.5em;
+      font-weight: bold;
+      margin-bottom: 1em;
+    }
+
+    #start-btn {
+      font-size: 1.5em;
+      padding: 0.6em 1.2em;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #result {
+      font-size: 2em;
+      margin: 1em 0;
+      word-wrap: break-word;
+    }
+
+    a {
+      display: inline-block;
+      font-size: 1.2em;
+      padding: 0.4em 1em;
+      text-decoration: none;
+      color: white;
+      background-color: #007BFF;
+      border-radius: 5px;
+      margin-top: 1em;
+    }
+  </style>
+</head>
+<body>
+  <div class="header-box">岩波新書ルーレット</div>
+  <br>
+  <button id="start-btn">GO</button>
+
+  <div id="result"></div>
+  <div id="search-link">
+    <a id="google-link" href="" target="_blank">Googleで検索</a>
+  </div>
+
+  <script>
+    const shinshoNumbers = [
+      1955, 1954, 1953, 1952, 1951, 1950,
+      1949, 1948, 1947, 1946, 1945, 1944,
+      1943, 1942, 1941, 1940, 1939, 1938
+      // 実際はCSVからの全リストをここに展開 or 外部ファイル読込
+    ];
+
+    const btn = document.getElementById("start-btn");
+    const result = document.getElementById("result");
+    const searchLink = document.getElementById("search-link");
+    const googleLink = document.getElementById("google-link");
+
+    btn.addEventListener("click", () => {
+      result.textContent = "...";
+      searchLink.style.display = "none";
+
+      setTimeout(() => {
+        const random = shinshoNumbers[Math.floor(Math.random() * shinshoNumbers.length)];
+        result.textContent = `新赤${random}`;
+        googleLink.href = `https://www.google.com/search?q=新赤${random}`;
+        googleLink.textContent = `新赤${random} を検索`;
+        searchLink.style.display = "block";
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
