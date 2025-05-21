@@ -60,14 +60,14 @@
   fetch('iwanami_red_list_with_links.csv')
     .then(response => response.text())
     .then(data => {
-      const lines = data.trim().split('\n').slice(1); // ←ここで定義する！
+      const lines = data.trim().split('\n').slice(1);
       for (const line of lines) {
         const parts = line.split(',');
         if (parts.length >= 3) {
-          shinshoNumbers.push(parts[2].trim()); // 3列目：検索URLを直接使う場合
+          shinshoNumbers.push(parts[2].trim());  // 検索URL
         }
       }
-      console.log("番号のみ読み込み成功:", shinshoNumbers.length, "件");
+      console.log("読み込み成功:", shinshoNumbers.length, "件");
     })
     .catch(err => {
       console.error("CSV読み込みエラー:", err);
@@ -83,34 +83,13 @@
 
     setTimeout(() => {
       const randomUrl = shinshoNumbers[Math.floor(Math.random() * shinshoNumbers.length)];
-      const numberMatch = decodeURIComponent(randomUrl).match(/新赤\\d+/);
-      result.textContent = numberMatch ? numberMatch[0] : "新赤？";
+      const label = decodeURIComponent(randomUrl.match(/新赤\\d+/)?.[0] || '新赤？');
+
+      result.textContent = label;
       window.open(randomUrl, '_blank');
     }, 1000);
   });
 </script>
 
-
-
-
-    const btn = document.getElementById("start-btn");
-    const result = document.getElementById("result");
-    const searchFrame = document.getElementById("search-frame");
-
-btn.addEventListener("click", () => {
-  if (shinshoNumbers.length === 0) return;
-
-  result.textContent = "...";
-
-  setTimeout(() => {
-    const random = shinshoNumbers[Math.floor(Math.random() * shinshoNumbers.length)];
-    result.textContent = random;
-
-    const query = encodeURIComponent(random);
-    window.open(`https://www.google.com/search?q=${query}`, '_blank');
-  }, 1000);
-});
-
-  </script>
 </body>
 </html>
